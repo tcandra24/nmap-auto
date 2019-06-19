@@ -1,0 +1,4 @@
+# Nmap 7.70 scan initiated Sat Jun  1 12:34:05 2019 as: nmap -sS -T4 -A -sC -oA scanme --stylesheet https://raw.githubusercontent.com/honze-net/nmap-bootstrap-xsl/master/nmap-bootstrap.xsl 127.0.0.1
+Host: 127.0.0.1 (localhost)	Status: Up
+Host: 127.0.0.1 (localhost)	Ports: 80/open/tcp//http//Apache httpd 2.4.39 ((Unix) PHP|7.3.5)/, 3306/open/tcp//mysql//MySQL 5.5.5-10.3.14-MariaDB/	Ignored State: closed (998)	OS: Linux 2.6.32	Seq Index: 259	IP ID Seq: All zeros
+# Nmap done at Sat Jun  1 12:34:17 2019 -- 1 IP address (1 host up) scanned in 13.49 seconds

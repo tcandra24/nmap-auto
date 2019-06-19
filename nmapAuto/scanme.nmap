@@ -1,0 +1,32 @@
+# Nmap 7.70 scan initiated Sat Jun  1 12:34:05 2019 as: nmap -sS -T4 -A -sC -oA scanme --stylesheet https://raw.githubusercontent.com/honze-net/nmap-bootstrap-xsl/master/nmap-bootstrap.xsl 127.0.0.1
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.00013s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.39 ((Unix) PHP/7.3.5)
+| http-ls: Volume /
+| SIZE  TIME              FILENAME
+| 1.2M  2019-04-17 21:13  client-web_Free23-03-2019_1616785917.zip
+|_
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Apache/2.4.39 (Unix) PHP/7.3.5
+|_http-title: Index of /
+3306/tcp open  mysql   MySQL 5.5.5-10.3.14-MariaDB
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.5.5-10.3.14-MariaDB
+|   Thread ID: 20
+|   Capabilities flags: 63486
+|   Some Capabilities: Support41Auth, IgnoreSpaceBeforeParenthesis, Speaks41ProtocolOld, LongColumnFlag, DontAllowDatabaseTableColumn, FoundRows, IgnoreSigpipes, ConnectWithDatabase, SupportsLoadDataLocal, SupportsCompression, Speaks41ProtocolNew, InteractiveClient, ODBCClient, SupportsTransactions, SupportsMultipleStatments, SupportsMultipleResults, SupportsAuthPlugins
+|   Status: Autocommit
+|   Salt: F^(Hr(mod(7|-f<7A}sK
+|_  Auth Plugin Name: 94
+Device type: general purpose
+Running: Linux 2.6.X
+OS CPE: cpe:/o:linux:linux_kernel:2.6.32
+OS details: Linux 2.6.32
+Network Distance: 0 hops
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jun  1 12:34:17 2019 -- 1 IP address (1 host up) scanned in 13.49 seconds
