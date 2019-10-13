@@ -1,8 +1,8 @@
+#!/usr/bin/env python
+
 import nmap, __future__
 import sys, os, time, string, datetime
-import random, json, pingparsing
-
-
+import random, json, pingparsing, cowsay
 
 def checkPing(host):
 	print("Checking Connection to Target!!!")
@@ -24,6 +24,9 @@ def checkPing(host):
 		return False
 
 def scanInit(ip, args, style):
+	GREEN = '\033[92m'
+	END = '\033[0m'
+	
 	response = checkPing(ip)
 	if  response == True:
 		print("Connection..... OK")
@@ -38,13 +41,14 @@ def scanInit(ip, args, style):
 			random_string = ''.join(random.choice(allchar) for _ in range(1,10) )
 			d = datetime.datetime.now()
 			date = d.strftime("%d-%m-%y")
-
-			file = open("scan-{0}-{1}.xml" .format(date ,random_string),'w')
-			file.write(xml)
-			file.close()
-			print("XML File Scan-{0}-{1}.xml " .format(date ,random_string))
+			
+			with open("Output_Files/scan-{0}-{1}.xml" .format(date ,random_string),'w') as file:
+				file.write(xml)
+				
+			print("\nXML File Scan-{0}-{1}.xml " .format(date ,random_string))
 	else:
-		print("Please Check Your Connetion To Target")
+		print("--------------------------------------")
+		print("Please Check Your"+GREEN+" Connetion "+END+"To Target")
 
 def quickScan(ip, port, output):
 	if output[0].upper() == 'Y':
@@ -115,67 +119,72 @@ def typeScan(mode, ip, port, output):
 
 def printDict(d):
 	for k, v in d.items():
-		
 		if isinstance(v,dict):
 			print("---------------")
 			print("[ {0} ]" .format(k))
 			print("---------------")
-			printDict(v)
+			printDict(v)            
 		else:
 			print("[+] - {0} " .format(k))
-			print("--> [ {0} ]" .format(v))
+			if isinstance(v,list):
+				for v2 in v:
+					for key, value in v2.items():                    
+						print("--> [ {0} : {1} ]" .format(key, value))
+			else:
+				print("--> [ {0} ]" .format(v))			                
 
 def menu(banner, menuTop, scriptMenu, typeMenu, about):
 	os.system('clear')
-	menu = True
-	while menu:
+	while True:
+		cowsay.dragon(" -Welcome-")
 		print(banner)
 		try:
 			print(menuTop)
 			menu = input("Choose Menu : ")
 			if menu == '1':
-				ip = input("IP Address : ")
-				port = input("Port: ")
-				output = input("Use XML Output ? (Yes/No)")
+				ip = input("{0} IP Address : " .format("{"+GREEN+"Quick Scan"+END+"}"))
+				port = input("{0} Port: " .format("{"+GREEN+"Quick Scan"+END+"}"))
+				output = input("{0} Use XML Output ? (Yes/No)" .format("{"+GREEN+"Quick Scan"+END+"}"))
 				quickScan(ip, port, output)
 			elif menu == '2':
-				ip = input("IP Address : ")
-				port = input("Port: ")
-				output = input("Use XML Output ? (Yes/No)")
+				ip = input("{0} IP Address : " .format("{"+GREEN+"Intense Scan"+END+"}"))
+				port = input("{0} Port: " .format("{"+GREEN+"Intense Scan"+END+"}"))
+				output = input("{0} Use XML Output ? (Yes/No)" .format("{"+GREEN+"Intense Scan"+END+"}"))
 				intenceScan(ip, port, output)
 			elif menu == '3':
 				submenu = True
 				while submenu:
 					print(scriptMenu)
-					submenu = input("Choose Script : ")
+					submenu = input("{0} Choose Script : " .format("{"+GREEN+"Script Scan"+END+"}"))
+					name_sub = submenuprint(menu, submenu)
 					if submenu == '1':
-						ip = input("IP Address : ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Script Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Script Scan{"+GREEN+name_sub+END+"}"))
 						scriptScan('all', ip, output)
 						submenu = False
 					elif submenu == '2':
-						ip = input("IP Address : ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Script Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Script Scan{"+GREEN+name_sub+END+"}"))
 						scriptScan('vuln', ip, output)
 						submenu = False
 					elif submenu == '3':
-						ip = input("IP Address : ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Script Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Script Scan{"+GREEN+name_sub+END+"}"))
 						scriptScan('auth', ip, output)
 						submenu = False
 					elif submenu == '4':
-						ip = input("IP Address : ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Script Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Script Scan{"+GREEN+name_sub+END+"}"))
 						scriptScan('default', ip, output)
 						submenu = False
 					elif submenu == '5':
-						ip = input("IP Address : ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Script Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Script Scan{"+GREEN+name_sub+END+"}"))
 						scriptScan('discovery', ip, output)
 						submenu = False
 					elif submenu == '6':
-						ip = input("IP Address : ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Script Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Script Scan{"+GREEN+name_sub+END+"}"))
 						scriptScan('malware', ip, output)
 						submenu = False
 					elif submenu == '99':
@@ -184,51 +193,53 @@ def menu(banner, menuTop, scriptMenu, typeMenu, about):
 						print("--------------------------------------")
 						print("Wrong Menu !!!!")
 						print("--------------------------------------")
+						input("Press Any Key.....")
 			elif menu == '4':
 				submenu = True
 				while submenu:
 					print(typeMenu)
-					submenu = input("Choose Type Scan : ")
+					submenu = input("{0} Choose Type Scan : " .format("{"+GREEN+"Custom Scan"+END+"}"))
+					name_sub = submenuprint(menu, submenu)
 					if submenu == '1':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sS', ip, port, output)
 						submenu = False
 					elif submenu == '2':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sT', ip, port, output)
 						submenu = False
 					elif submenu == '3':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sU', ip, port, output)
 						submenu = False
 					elif submenu == '4':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sN', ip, port, output)
 						submenu = False
 					elif submenu == '5':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sF', ip, port, output)
 						submenu = False
 					elif submenu == '6':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sX', ip, port, output)
 						submenu = False
 					elif submenu == '7':
-						ip = input("IP Address : ")
-						port = input("Port: ")
-						output = input("Use XML Output ? (Yes/No)")
+						ip = input("{0} IP Address : " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						port = input("{0} Port: " .format("Custom Scan{"+GREEN+name_sub+END+"}"))
+						output = input("{0} Use XML Output ? (Yes/No)" .format("Custom Scan{"+GREEN+name_sub+END+"}"))
 						typeScan('-sA', ip, port, output)
 						submenu = False
 					elif submenu == '99':
@@ -246,45 +257,82 @@ def menu(banner, menuTop, scriptMenu, typeMenu, about):
 				print("--------------------------------------")
 				print("Wrong Menu !!!!")
 				print("--------------------------------------")
+			input("\nPress Enter To Continue.....")
 		except(KeyboardInterrupt):
 			print("Exiiiting")
 			exit()
-	
+		except(ValueError):
+			print("--------------------------------------")
+			print("Value Error")
+			input("\nPress Enter To Continue.....")
 
-banner = '''
-<<<|| .:: Nmap Automation Scanner in Python ::. ||>>>
-<<<||            .:: Version: 1.0 ::.           ||>>>
-     
-'''
+def submenuprint(menu,mode):
+	if menu == '3':
+		if mode == '1':
+			return "All"
+		elif mode == '2':
+			return "Vuln"
+		elif mode == '3':
+			return "Auth"
+		elif mode == '4':
+			return "Default"
+		elif mode == '5':
+			return "Discovery"
+		elif mode == '6':
+			return "Malware"			
+	elif menu == '4':
+		if mode == '1':
+			return "TCP SYN Scan"
+		elif mode == '2':
+			return "TCP Connect Scan"
+		elif mode == '3':
+			return "UDP Scan"
+		elif mode == '4':
+			return "TCP NULL Scan"
+		elif mode == '5':
+			return "TCP FIN Scan"
+		elif mode == '6':
+			return "Xmas Scan"
+		elif mode == '7':
+			return "TCP ACK Scan"
+
+GREEN = '\033[92m'
+END = '\033[0m'
+
+banner = GREEN + '''
+	<<<||'''+END+'''  .:: Nmap Automation Scanner in Python ::.  '''+GREEN+'''||>>>
+	<<<||'''+END+'''            .:: Version: 1.0 ::.             '''+GREEN+'''||>>>
+		 
+'''+END
 
 menuTop = ''' 
-	1. Quick Scan
-	2. Intense Scan
-	3. Script Scan
-	4. Custom Scan
-	5. About
-	6. Exit
+	{1} Quick Scan
+	{2} Intense Scan
+	{3} Script Scan
+	{4} Custom Scan
+	{5} About
+	{6} Exit
 '''
 
 scriptMenu = ''' 
-	1. All
-	2. Vuln
-	3. Auth
-	4. Default
-	5. Discovery
-	6. Malware
-	99. Back
+	{1} All
+	{2} Vuln
+	{3} Auth
+	{4} Default
+	{5} Discovery
+	{6} Malware
+	{99} Back
 '''
 
 typeMenu = ''' 
-	1. TCP SYN Scan
-	2. TCP Connect Scan
-	3. UDP Scan
-	4. TCP NULL Scan
-	5. TCP FIN Scan
-	6. Xmas Scan
-	7. TCP ACK Scan
-	99. Back
+	{1} TCP SYN Scan
+	{2} TCP Connect Scan
+	{3} UDP Scan
+	{4} TCP NULL Scan
+	{5} TCP FIN Scan
+	{6} Xmas Scan
+	{7} TCP ACK Scan
+	{99} Back
 '''
 
 about = '''
@@ -293,7 +341,8 @@ about = '''
 	<<<||          .:: By Vr33d to Cod3 ::.         ||>>>
 '''
 
-if os.geteuid() == 0:
-	menu(banner, menuTop, scriptMenu, typeMenu, about)
-else:
-	sys.exit("Must Run as Root")
+if __name__ == "__main__":
+	if os.geteuid() == 0:
+		menu(banner, menuTop, scriptMenu, typeMenu, about)
+	else:
+		sys.exit("Must Run as Root")
